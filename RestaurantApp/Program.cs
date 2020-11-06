@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace RestaurantApp
 {
     internal class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var datasource = @"HOME-PC\SQLEXPRESS";
             var database = "Restaurant";
@@ -14,11 +15,13 @@ namespace RestaurantApp
             string connString = @"Data Source=" + datasource + ";Initial Catalog="
                                 + database + ";Integrated Security=True;";
 
-            
             SqlConnection conn = new SqlConnection(connString);
 
+            //Инициализируем FileManager
             FileManager fileManager = new FileManager(conn);
             fileManager.CreateHtmlFile();
+            
+            await EmailService.SendEmailAsync();
         }
     }
 }
